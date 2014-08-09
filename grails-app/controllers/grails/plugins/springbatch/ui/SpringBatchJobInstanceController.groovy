@@ -9,12 +9,12 @@ class SpringBatchJobInstanceController {
 	def show(String jobName, Long id) {
 		if(!jobName) {
 			flash.error = "Please supply a job name"
-			redirect(controller: "springBatchJob", action: "list")
+			redirect(mapping:'batch', controller: "springBatchJob", action: "list")
 			return
 		}
 		if(!id) {
 			flash.error = "Please supply a job instance id"
-			redirect(controller: "springBatchJob", action: "show", id: jobName)
+			redirect(mapping:'batch', controller: "springBatchJob", action: "show", id: jobName)
 			return
 		}
 	

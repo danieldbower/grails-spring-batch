@@ -17,7 +17,7 @@ class SpringBatchStepExecutionController {
 		
 		if(!id || !jobExecutionId) {
 			flash.error = "Please supply a Step execution id and a Job execution id"
-			redirect(controller: "springBatchJob", action: "list")
+			redirect(controller: "springBatchJob", mapping:'batch', action: "list")
 		} else {
 			StepExecutionModel stepExecution = springBatchUiService.stepExecutionModel(jobExecutionId, id)
 			def modelInstances = []

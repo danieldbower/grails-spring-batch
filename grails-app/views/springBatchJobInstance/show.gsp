@@ -8,7 +8,7 @@
 		<div class="nav" role="navigation">
 			<ul>
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link controller="springBatchJob" action="show" id="${jobInstance.jobName}">
+				<li><g:link mapping="batch" controller="springBatchJob" action="show" id="${jobInstance.jobName}">
 					<g:message code="batch.jobInstance.backToJob.label"/></g:link></li>
 			</ul>
 		</div>
@@ -50,7 +50,7 @@
 				<tbody>
 				<g:each in="${modelInstances}" status="i" var="jobExecutionModelInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-						<td><g:link controller="springBatchJobExecution" action="show" id="${jobExecutionModelInstance.id}">${fieldValue(bean: jobExecutionModelInstance, field: "id")}</g:link></td>
+						<td><g:link mapping="batch" controller="springBatchJobExecution" action="show" id="${jobExecutionModelInstance.id}">${fieldValue(bean: jobExecutionModelInstance, field: "id")}</g:link></td>
 						<td><g:formatDate date="${jobExecutionModelInstance.startDateTime}" /></td>
 						<td><batch:durationPrint duration="${jobExecutionModelInstance.duration}"/></td>
 						<td>${fieldValue(bean: jobExecutionModelInstance, field: "status")}</td>

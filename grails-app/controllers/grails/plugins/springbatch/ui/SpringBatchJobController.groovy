@@ -45,7 +45,7 @@ class SpringBatchJobController {
 				jobModelInstances: springBatchUiService.getJobInstanceModels(id, params)]
 		} else {
 			flash.error = "Please supply a job name"
-			redirect(controller: "springBatchJob", action: "list")
+            redirect(mapping:'batch', controller: "springBatchJob", action: "list")
 		}
 	}
 
@@ -66,17 +66,17 @@ class SpringBatchJobController {
 		
 		String action = (params.a=='l')?'list':'show'
 		
-		redirect(action:action, id:id)
+		redirect(mapping:'batch', action:action, id:id)
 	}
 	
 	def enableLaunching() {
 		springBatchService.ready = true
-		redirect action:'list'
+		redirect mapping:'batch', action:'list'
 	}
 	
 	def disableLaunching() {
 		springBatchService.ready = false
-		redirect action:'list'
+		redirect mapping:'batch', action:'list'
 	}
 
 	def stopAllExecutions(String id) {
@@ -84,12 +84,12 @@ class SpringBatchJobController {
 			springBatchService.stopAllJobExecutions(id)
 			
 			flash.message = "Stopped all Job Executions for Job $id"
-			redirect(action:'show', id:id)
+            redirect(mapping:'batch', action:'show', id:id)
 		} else {
 			springBatchService.stopAllJobExecutions()
-			
+
 			flash.message = 'Stopping all Job Executions for all Jobs'
-			redirect(action:"list")
+            redirect(mapping:'batch', action:"list")
 		}
 	}
 }

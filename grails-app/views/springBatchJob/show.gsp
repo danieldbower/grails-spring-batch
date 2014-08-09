@@ -8,10 +8,10 @@
 		<div class="nav" role="navigation">
 			<ul>
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link action="list" >List</g:link></li>
-				<g:if test="${job.launchable}"><li><g:link action="launch" id="${job.name}">
+				<li><g:link mapping="batch" action="list" >List</g:link></li>
+				<g:if test="${job.launchable}"><li><g:link  mapping="batch" action="launch" id="${job.name}">
 					<g:message code="batch.job.launch.label"/></g:link></li></g:if>
-				<li><g:link action="stopAllExecutions" id="${job.name}">
+				<li><g:link mapping="batch" action="stopAllExecutions" id="${job.name}">
 					<g:message code="batch.job.stopall.label"/></g:link></li>
 			</ul>
 		</div>
@@ -48,7 +48,7 @@
 				<g:if test="${job.mostRecentJobExecution}">
 				<li class="fieldcontain">
 					<span id="mostRecentExecution-label" class="property-label"><g:message code="batch.job.mostRecentJobExecution.label"/></span>
-					<g:link controller="springBatchJobExecution" action="show" id="${job.mostRecentJobExecution.id}">
+					<g:link mapping="batch" controller="springBatchJobExecution" action="show" id="${job.mostRecentJobExecution.id}">
 						<g:message code="batch.jobExecution.startDateTime.label"/> - 
 							<span class="property-value" aria-labelledby="startDateTime-label">${job.mostRecentJobExecution.startDateTime}</span>    
 						<g:message code="batch.jobExecution.duration.label"/> - 
@@ -76,7 +76,7 @@
 				<tbody>
 				<g:each in="${jobModelInstances}" status="i" var="jobInstanceModelInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-						<td><g:link controller="springBatchJobInstance" action="show" id="${jobInstanceModelInstance.id}" params="[jobName: job.name]">${fieldValue(bean: jobInstanceModelInstance, field: "id")}</g:link></td>
+						<td><g:link mapping="batch" controller="springBatchJobInstance" action="show" id="${jobInstanceModelInstance.id}" params="[jobName: job.name]">${fieldValue(bean: jobInstanceModelInstance, field: "id")}</g:link></td>
 						<td>${fieldValue(bean: jobInstanceModelInstance, field: "jobExecutionCount")}</td>
 						<td>${fieldValue(bean: jobInstanceModelInstance, field: "lastJobExecutionStatus")}</td>
 					</tr>

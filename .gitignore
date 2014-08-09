@@ -2,7 +2,7 @@
 target
 target-eclipse
 plugin.xml
-/web-app
+web-app
 *.iml
 *.ipr
 *.iws
@@ -12,3 +12,5 @@ plugin.xml
 cobertura.ser
 .settings
 *.sha1
+.project
+.classpath

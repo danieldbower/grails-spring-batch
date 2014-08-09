@@ -11,12 +11,12 @@ class SimpleScheduleController {
 	
 	def enable(){
 		simpleScheduleService.status = true
-		redirect action:'status'
+		redirect mapping:'batch', action:'status'
 	}
 	
 	def disable(){
 		simpleScheduleService.status = false
-		redirect action:'status'
+		redirect mapping:'batch', action:'status'
 	}
 	
 	def status(){

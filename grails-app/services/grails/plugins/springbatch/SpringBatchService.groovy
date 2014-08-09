@@ -22,8 +22,8 @@ import org.springframework.context.ApplicationEvent
 import org.springframework.context.ApplicationListener
 import org.springframework.context.event.ContextClosedEvent
 
-class SpringBatchService implements  ApplicationListener {
-	
+class SpringBatchService implements  ApplicationListener<ApplicationEvent> {
+
 	static transactional = false
 	
 	GrailsApplication grailsApplication
@@ -116,7 +116,7 @@ class SpringBatchService implements  ApplicationListener {
 			}
 		}
 	}
-	
+
 	/**
 	 * True if there are any running executions for the Job
 	 */

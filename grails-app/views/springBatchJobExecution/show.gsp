@@ -8,11 +8,11 @@
 		<div class="nav" role="navigation">
 			<ul>
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link controller="springBatchJobInstance" action="show" id="${jobExecution.instanceId}" params="[jobName:jobExecution.jobName]">
+				<li><g:link mapping="batch" controller="springBatchJobInstance" action="show" id="${jobExecution.instanceId}" params="[jobName:jobExecution.jobName]">
 					<g:message code="batch.jobExecution.backToJobInstance.label"/></g:link></li>
-				<li><g:link action="restart" id="${jobExecution.id}">
+				<li><g:link mapping="batch" action="restart" id="${jobExecution.id}">
 					<g:message code="batch.jobExecution.restart.label"/></g:link></li>
-				<li><g:link action="stop" id="${jobExecution.id}">
+				<li><g:link mapping="batch" action="stop" id="${jobExecution.id}">
 					<g:message code="batch.jobExecution.stop.label"/></g:link></li>
 			</ul>
 		</div>
@@ -62,7 +62,7 @@
 				<tbody>
 				<g:each in="${modelInstances}" status="i" var="stepExecutionModelInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-						<td><g:link controller="springBatchStepExecution" action="show" id="${stepExecutionModelInstance.id}" params="${[jobExecutionId:jobExecution.id]}">${fieldValue(bean: stepExecutionModelInstance, field: "id")}</g:link></td>
+						<td><g:link mapping="batch" controller="springBatchStepExecution" action="show" id="${stepExecutionModelInstance.id}" params="${[jobExecutionId:jobExecution.id]}">${fieldValue(bean: stepExecutionModelInstance, field: "id")}</g:link></td>
 						<td>${fieldValue(bean: stepExecutionModelInstance, field: "name")}</td>
 						<td><g:formatDate date="${stepExecutionModelInstance.startDateTime}" /></td>
 						<td><batch:durationPrint duration="${stepExecutionModelInstance?.duration}"/></td>

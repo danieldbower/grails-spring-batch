@@ -3,6 +3,3 @@ class SpringBatchUrlMappings {
         name batch: "/batch/$controller/$action?/$id?(.$format)?"(plugin: 'springBatch')
     }
 }
-
-
-

@@ -37,7 +37,7 @@ class SpringBatchBeansLoadedTests extends GroovyTestCase {
     @Test
     public void testSpringBatchTablesCreated() {
         def sql = new Sql(dataSource)
-        def tables = ['BATCH_JOB_EXECUTION', 'BATCH_JOB_EXECUTION_CONTEXT', 'BATCH_JOB_INSTANCE', 'BATCH_JOB_PARAMS',
+        def tables = ['BATCH_JOB_EXECUTION', 'BATCH_JOB_EXECUTION_CONTEXT', 'BATCH_JOB_INSTANCE', 'BATCH_JOB_EXECUTION_PARAMS',
             'BATCH_STEP_EXECUTION', 'BATCH_STEP_EXECUTION_CONTEXT']
 
         tables.each {table ->

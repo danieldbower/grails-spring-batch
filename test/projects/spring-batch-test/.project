@@ -26,7 +26,7 @@
 		<link>
 			<name>.link_to_grails_plugins</name>
 			<type>2</type>
-			<locationURI>GRAILS_ROOT/2.2.4/projects/spring-batch-test/plugins</locationURI>
+			<location>/data/allegro/code/infinum/workspace/grails-spring-batch/test/projects/spring-batch-test/target/work/plugins</location>
 		</link>
 	</linkedResources>
 </projectDescription>

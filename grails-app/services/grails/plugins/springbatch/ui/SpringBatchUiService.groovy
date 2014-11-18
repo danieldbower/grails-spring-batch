@@ -122,7 +122,7 @@ class SpringBatchUiService {
 				jobName: jobInstance.jobName,
 				jobExecutionCount: jobExecutions.size(),
 				lastJobExecutionStatus: jobExecutions[0]?.status,
-				jobParameters: jobInstance.jobParameters.parameters,
+				//jobParameters: jobInstance.jobParameters.parameters,
 				executions: jobExecutionModels)
 	}
 

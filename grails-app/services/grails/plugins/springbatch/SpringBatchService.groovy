@@ -209,11 +209,6 @@ where bji.job_name = ?
 	
 	/**
 	 * Allows retrying to start the job
-	 * @param selectedLauncher
-	 * @param job
-	 * @param jobParams
-	 * @param trampoline
-	 * @return
 	 */
 	private Map selectedLauncherRunWrapper(JobLauncher selectedLauncher, 
 			Job job, JobParameters jobParams, int trampoline){
@@ -227,17 +222,9 @@ where bji.job_name = ?
 		}catch(CannotCreateTransactionException ccte){
 			/* Getting intermittent errors in postgres:  "Cannot change 
 			 * transaction isolation level in the middle of a transaction."
-			 * Attempting to retry my way out of it...
 			 */
-		
-			log.warn("Failed to create transaction, retrying - $trampoline - ", ccte)
-			if(trampoline < 5){
-				trampoline++
-				return selectedLauncherRunWrapper(
-						selectedLauncher, job, jobParams, trampoline)
-			}else{
-				return[success: false, message: ccte.message, failurePriority: 'high']
-			}
+			log.warn("Failed to create transaction - Job not launched", ccte)
+			return[success: false, message: ccte.message, failurePriority: 'high']
 		}
 		
 		return null

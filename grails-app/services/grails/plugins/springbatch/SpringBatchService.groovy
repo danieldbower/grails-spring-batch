@@ -21,6 +21,7 @@ import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteExcep
 import org.springframework.context.ApplicationEvent
 import org.springframework.context.ApplicationListener
 import org.springframework.context.event.ContextClosedEvent
+import org.springframework.transaction.CannotCreateTransactionException
 
 class SpringBatchService implements  ApplicationListener<ApplicationEvent> {
 	
@@ -197,13 +198,49 @@ where bji.job_name = ?
 		}
 		
 		// Run the Job
+		def launchResult = selectedLauncherRunWrapper(selectedLauncher, job, jobParams, 0)
+		if(launchResult){
+			//getting a result actually means it failed somehow.
+			return launchResult
+		}
+	
+		return [success: true, message:"Spring Batch Job($jobName) launched from EtlService"]
+	}
+	
+	/**
+	 * Allows retrying to start the job
+	 * @param selectedLauncher
+	 * @param job
+	 * @param jobParams
+	 * @param trampoline
+	 * @return
+	 */
+	private Map selectedLauncherRunWrapper(JobLauncher selectedLauncher, 
+			Job job, JobParameters jobParams, int trampoline){
+		
 		try{
 			selectedLauncher.run(job, jobParams)
+		
 		}catch(JobInstanceAlreadyCompleteException jiace){
 			return[success: false, message: jiace.message, failurePriority: 'high']
+		
+		}catch(CannotCreateTransactionException ccte){
+			/* Getting intermittent errors in postgres:  "Cannot change 
+			 * transaction isolation level in the middle of a transaction."
+			 * Attempting to retry my way out of it...
+			 */
+		
+			log.warn("Failed to create transaction, retrying - $trampoline - ", ccte)
+			if(trampoline < 5){
+				trampoline++
+				return selectedLauncherRunWrapper(
+						selectedLauncher, job, jobParams, trampoline)
+			}else{
+				return[success: false, message: ccte.message, failurePriority: 'high']
+			}
 		}
 		
-		return [success: true, message:"Spring Batch Job($jobName) launched from EtlService"]
+		return null
 	}
 	
 	/**

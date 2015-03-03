@@ -7,6 +7,7 @@ import javax.sql.DataSource
 import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.codehaus.groovy.grails.commons.spring.GrailsContextEvent
 import org.springframework.batch.admin.service.JobService
+import org.springframework.batch.core.BatchStatus
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.JobExecution
 import org.springframework.batch.core.JobInstance
@@ -77,6 +78,19 @@ class SpringBatchService implements  ApplicationListener<ApplicationEvent> {
 	
 	Collection<StepExecution> previousStepExecutions(String jobName, String stepName, int start, int max){
 		jobService.listStepExecutionsForStep(jobName, stepName, start, max)
+	}
+	
+	/**
+	 * Gets the last completed execution of the defined step.
+	 * Only the last 100 executions are checked for COMPLETED status.
+	 */
+	StepExecution lastCompletedStepExecution(String jobName, String stepName) {
+		for (StepExecution stepExecution : jobService.listStepExecutionsForStep(jobName, stepName, 0, 100)) {
+			if (stepExecution.status == BatchStatus.COMPLETED) {
+				return stepExecution
+			}
+		}
+		return null
 	}
 	
 	/**

@@ -5,8 +5,8 @@ grails.project.source.level = 1.7
 //Upgrading to SB 2.2.0.RELEASE will require a dependency on Grails 2.1.1
 //This is because SB 2.2.0.RELEASE requires Spring 3.1.2.RELEASE which was introduced in
 //Grails 2.1.1
-springBatchVersion = '3.0.2.RELEASE'   //'2.1.9.RELEASE'
-springBatchAdminVersion = '1.3.0.RELEASE' //'1.2.2.RELEASE'
+springBatchVersion = '3.0.3.RELEASE'
+springBatchAdminVersion = '1.3.0.RELEASE'
 
 grails.project.dependency.resolution = {
 
@@ -35,13 +35,13 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-         build(":release:3.0.1", ":rest-client-builder:1.0.3") {
+         build(":release:3.1.1", ":rest-client-builder:2.1.1") {
             export = false
         }
 
         compile ':platform-core:1.0.0'
 
-        runtime(":hibernate4:latest.release") { //4.3.5.4
+        runtime(":hibernate4:latest.release") { //4.3.8.1
             export = false
         }
 		

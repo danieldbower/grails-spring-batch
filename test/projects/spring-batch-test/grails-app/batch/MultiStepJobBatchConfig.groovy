@@ -42,18 +42,8 @@ beans {
         }
     }
 
-    printStartMessage(PrintMessageTasklet) { bean ->
-        bean.autowire = "byName"
-		mesg = 'Starting Job'
-    }
-
     printMessage(PrintMessageTasklet) { bean ->
         bean.autowire = "byName"
 		mesg = 'Running a step'
-    }
-
-    printEndMessage(PrintMessageTasklet) { bean ->
-        bean.autowire = "byName"
-		mesg = 'Finishing Job'
     }
 }

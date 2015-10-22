@@ -24,6 +24,8 @@ import org.springframework.batch.core.repository.dao.AbstractJdbcBatchMetadataDa
 
 class SpringBatchGrailsPlugin {
     def version = "2.0.12"
+    def groupId = 'org.grails.plugins'
+
     def grailsVersion = "2.0 > *"
     def title = "Grails Spring Batch Plugin"
     def author = "John Engelman"

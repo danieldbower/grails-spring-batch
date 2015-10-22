@@ -27,11 +27,11 @@ class SpringBatchJobController {
 				statuses.put( job, springBatchService.jobStatus(job))
 			}
 		}else {
-			render ([success:false, message:"Class: ${params.job.class.name}"])
+			render ([success:false, message:"Class: ${params.job.class.name}"]) as JSON
 			return
 		}
 		
-		render ([success:true, data:statuses])
+		render ([success:true, data:statuses]) as JSON
 	}
 	
     def list() {

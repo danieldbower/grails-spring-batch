@@ -12,6 +12,10 @@ beans {
         }
     }
 
+    /*
+     * Steps are made available to all jobs, they are shared in the same spring context and can be
+     * reused if the same bean name is used
+     */
     printStartMessage(PrintMessageTasklet) { bean ->
         bean.autowire = "byName"
 		mesg = 'Starting Job'

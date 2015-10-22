@@ -7,6 +7,7 @@ import javax.sql.DataSource
 import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.codehaus.groovy.grails.commons.spring.GrailsContextEvent
 import org.springframework.batch.admin.service.JobService
+import org.springframework.batch.core.BatchStatus
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.JobExecution
 import org.springframework.batch.core.JobInstance
@@ -21,6 +22,7 @@ import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteExcep
 import org.springframework.context.ApplicationEvent
 import org.springframework.context.ApplicationListener
 import org.springframework.context.event.ContextClosedEvent
+import org.springframework.transaction.CannotCreateTransactionException
 
 class SpringBatchService implements  ApplicationListener<ApplicationEvent> {
 	
@@ -76,6 +78,19 @@ class SpringBatchService implements  ApplicationListener<ApplicationEvent> {
 	
 	Collection<StepExecution> previousStepExecutions(String jobName, String stepName, int start, int max){
 		jobService.listStepExecutionsForStep(jobName, stepName, start, max)
+	}
+	
+	/**
+	 * Gets the last completed execution of the defined step.
+	 * Only the last 100 executions are checked for COMPLETED status.
+	 */
+	StepExecution lastCompletedStepExecution(String jobName, String stepName) {
+		for (StepExecution stepExecution : jobService.listStepExecutionsForStep(jobName, stepName, 0, 100)) {
+			if (stepExecution.status == BatchStatus.COMPLETED) {
+				return stepExecution
+			}
+		}
+		return null
 	}
 	
 	/**
@@ -197,13 +212,36 @@ where bji.job_name = ?
 		}
 		
 		// Run the Job
+		def launchResult = selectedLauncherRunWrapper(selectedLauncher, job, jobParams, 0)
+		if(launchResult){
+			//getting a result actually means it failed somehow.
+			return launchResult
+		}
+	
+		return [success: true, message:"Spring Batch Job($jobName) launched from EtlService"]
+	}
+	
+	/**
+	 * Allows retrying to start the job
+	 */
+	private Map selectedLauncherRunWrapper(JobLauncher selectedLauncher, 
+			Job job, JobParameters jobParams, int trampoline){
+		
 		try{
 			selectedLauncher.run(job, jobParams)
+		
 		}catch(JobInstanceAlreadyCompleteException jiace){
 			return[success: false, message: jiace.message, failurePriority: 'high']
+		
+		}catch(CannotCreateTransactionException ccte){
+			/* Getting intermittent errors in postgres:  "Cannot change 
+			 * transaction isolation level in the middle of a transaction."
+			 */
+			log.warn("Failed to create transaction - Job not launched", ccte)
+			return[success: false, message: ccte.message, failurePriority: 'high']
 		}
 		
-		return [success: true, message:"Spring Batch Job($jobName) launched from EtlService"]
+		return null
 	}
 	
 	/**

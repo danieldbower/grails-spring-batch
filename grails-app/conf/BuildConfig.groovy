@@ -13,15 +13,17 @@ grails.project.dependency.resolution = {
     log 'warn'
 
     repositories {
-        grailsCentral()
         mavenLocal()
+        grailsCentral()
         mavenCentral()
     }
 
     dependencies {
 
         def excludes = {
-            excludes 'junit', 'spring-aop', 'spring-core', 'spring-oxm', 'spring-test', 'spring-tx', 'slf4j-log4j12', 'log4j'
+            excludes 'junit', 'spring-aop', 'spring-core', 'spring-oxm', 
+				'spring-test', 'spring-tx', 'slf4j-log4j12', 'log4j',
+				'aspectjrt', 'aspectjweaver'
         }
 
         compile "org.springframework.batch:spring-batch-core:${springBatchVersion}",

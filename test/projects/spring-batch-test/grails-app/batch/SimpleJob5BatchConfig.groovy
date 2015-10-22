@@ -11,14 +11,4 @@ beans {
             batch.tasklet(ref: 'printEndMessage')
         }
     }
-
-    printStartMessage(PrintMessageTasklet) { bean ->
-        bean.autowire = "byName"
-		mesg = 'Starting Job'
-    }
-
-    printEndMessage(PrintMessageTasklet) { bean ->
-        bean.autowire = "byName"
-		mesg = 'Finishing Job'
-    }
 }

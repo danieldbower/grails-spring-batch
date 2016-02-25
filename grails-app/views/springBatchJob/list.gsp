@@ -10,10 +10,10 @@
 			<ul>
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
 				<li><g:if test="${ready}">
-						<g:link controller="springBatchJob" action="disableLaunching">
+						<g:link mapping="batch" controller="springBatchJob" action="disableLaunching">
 							<g:message code="batch.disableLaunching"/></g:link></g:if>
 					<g:else>
-						<g:link controller="springBatchJob" action="enableLaunching">
+						<g:link mapping="batch" controller="springBatchJob" action="enableLaunching">
 							<g:message code="batch.enableLaunching"/></g:link></g:else>
 				</li>
 				<li><g:link action="stopAllExecutions">
@@ -41,17 +41,17 @@
 				<tbody>
 				<g:each in="${modelInstances}" status="i" var="modelInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-						<td><g:link controller="springBatchJob" action="show" id="${modelInstance.name}">${fieldValue(bean: modelInstance, field: "name")}</g:link></td>
+						<td><g:link mapping="batch" controller="springBatchJob" action="show" id="${modelInstance.name}">${fieldValue(bean: modelInstance, field: "name")}</g:link></td>
 						<td>${fieldValue(bean: modelInstance, field: "currentlyRunning")}</td>
 						<td>${fieldValue(bean: modelInstance, field: "executionCount")}</td>
 						<td><g:if test="${modelInstance.mostRecentJobExecution}">
-								<g:link controller="springBatchJobExecution" action="show" id="${modelInstance.mostRecentJobExecution.id}">
+								<g:link mapping="batch" controller="springBatchJobExecution" action="show" id="${modelInstance.mostRecentJobExecution.id}">
 									${modelInstance.mostRecentJobExecution.startDateTime} - ${modelInstance.mostRecentJobExecution.status} - ${modelInstance.mostRecentJobExecution.exitStatus.exitCode} 
 								</g:link>
 							</g:if>
 						</td>
 						<td><g:if test="modelInstance.launchable}">
-							<g:link action="launch" id="${modelInstance.name}" 
+							<g:link mapping="batch" action="launch" id="${modelInstance.name}"
 								class="launchJobButton" params="[a: 'l']">
 							<g:message code="batch.job.launch.label"/></g:link></g:if></td>
 					</tr>

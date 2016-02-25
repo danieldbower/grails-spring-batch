@@ -1,6 +1,6 @@
 <sitemesh>
     <page-parsers>
-        <parser content-type="text/html"
+        <parser content-type="text/html1"
             class="org.codehaus.groovy.grails.web.sitemesh.GrailsHTMLPageParser" />
         <parser content-type="text/html;charset=ISO-8859-1"
             class="org.codehaus.groovy.grails.web.sitemesh.GrailsHTMLPageParser" />

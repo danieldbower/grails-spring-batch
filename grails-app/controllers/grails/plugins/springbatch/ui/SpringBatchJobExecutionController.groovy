@@ -15,7 +15,7 @@ class SpringBatchJobExecutionController {
 				modelInstances: springBatchUiService.getStepExecutionModels(id, params)]
 		} else {
 			flash.error = "Please supply a job execution id"
-			redirect(controller: "springBatchJob", action: "list")
+            redirect(mapping:'batch', controller: "springBatchJob", action: "list")
 		}
 	}
 
@@ -27,10 +27,10 @@ class SpringBatchJobExecutionController {
 			}catch (JobExecutionException jee){
 				flash.error = jee.message
 			}
-			redirect(action: "show", id:id)
+            redirect(mapping:'batch', action: "show", id:id)
 		} else {
 			flash.error = "Please supply a job execution id"
-			redirect(controller: "springBatchJob", action: "list")
+            redirect(mapping:'batch', controller: "springBatchJob", action: "list")
 		}
 	}
 
@@ -42,10 +42,10 @@ class SpringBatchJobExecutionController {
 			}catch (JobExecutionException jee){
 				flash.error = jee.message
 			}
-			redirect(action: "show", id:id)
+            redirect(mapping:'batch', action: "show", id:id)
 		} else {
 			flash.error = "Please supply a job execution id"
-			redirect(controller: "springBatchJob", action: "list")
+            redirect(mapping:'batch', controller: "springBatchJob", action: "list")
 		}
 	}
 }

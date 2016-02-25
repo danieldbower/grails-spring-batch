@@ -22,10 +22,8 @@ import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteExcep
 import org.springframework.context.ApplicationEvent
 import org.springframework.context.ApplicationListener
 import org.springframework.context.event.ContextClosedEvent
-import org.springframework.transaction.CannotCreateTransactionException
 
 class SpringBatchService implements  ApplicationListener<ApplicationEvent> {
-	
 	static transactional = false
 	
 	GrailsApplication grailsApplication
@@ -131,7 +129,7 @@ class SpringBatchService implements  ApplicationListener<ApplicationEvent> {
 			}
 		}
 	}
-	
+
 	/**
 	 * True if there are any running executions for the Job
 	 */

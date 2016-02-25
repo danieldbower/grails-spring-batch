@@ -1,6 +1,7 @@
 package grails.plugins.springbatch
 
 import groovy.sql.Sql
+import org.springframework.transaction.CannotCreateTransactionException
 
 import javax.sql.DataSource
 

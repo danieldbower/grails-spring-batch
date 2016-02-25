@@ -8,7 +8,7 @@ The Grails Spring Batch plugin is built using Grails 2.x, it currently has not b
 
 To install the plugin, add the following entry to your `BuildConfig.groovy` file in the plugins sections:
 ```groovy
-compile ':spring-batch:2.1.0'
+compile ':spring-batch:2.5.0'
 ```
 
 Once the plugin is installed, you can define your Spring Batch job configuration in a Groovy script file in your application's `grails-app/batch` directory. The script's filename must end with BatchConfig (i.e. `SimpleJobBatchConfig.groovy`). Define your Spring Batch job using the Grails BeanBuilder syntax (just like in the `resources.groovy` file).
@@ -113,24 +113,6 @@ The plugin provides the following scripts:
 + database - The database type to use: db2, derby, h2, hsqldb, mysql, oracle10g, postgresql, sqlserver, sybase
   + Type: String
   + Default: h2
-+ jmx
-  + enable - enables export of Spring Batch resources through a local MBean
-      + Type: Boolean
-      + Default: false
-  + name - the service name with which to export the resources
-      + Type: String
-      + Default: jobOperator
-  + remote
-      + enable - enables export of Spring Batch resources through a remote RMI Registry (default connection string is service:jmx:rmi://localhost/jndi/rmi://localhost:1099/springBatch)
-          + Type: Boolean
-          + Default: false
-      + name - the service name with which to export the resources
-          + Type: String
-          + Default: springBatch
-      + rmi
-          + port - the port on which the RMI Registry is attached
-              + Type: Integer
-              + Default: 1099
 
 ## Job Definition
 
@@ -190,6 +172,12 @@ The jobs will run fairly frequently to demonstrate the difference between async 
 
 
 ## Versions
++ v.2.5.0
+  + Update to Grails 2.5
+  + Remove Platform-core plugin
+  + Update to Spring Batch 3.0.3
+  + Remove Jmx feature
+  + Remove Reloading feature
 + v.2.1.0
   + Update to Grails 2.3
   + Update to Spring Batch 2.2.7

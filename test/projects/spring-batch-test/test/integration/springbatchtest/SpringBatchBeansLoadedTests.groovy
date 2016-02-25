@@ -27,14 +27,6 @@ class SpringBatchBeansLoadedTests extends GroovyTestCase {
     }
 
     @Test
-    public void testJmxBeanLoaded() {
-        def sbMBean = grailsApplication.mainContext.getBean("springBatchExporter")
-        assert sbMBean
-
-        //TODO check that the JobOperator interface is exposed here
-    }
-
-    @Test
     public void testSpringBatchTablesCreated() {
         def sql = new Sql(dataSource)
         def tables = ['BATCH_JOB_EXECUTION', 'BATCH_JOB_EXECUTION_CONTEXT', 'BATCH_JOB_INSTANCE', 'BATCH_JOB_EXECUTION_PARAMS',

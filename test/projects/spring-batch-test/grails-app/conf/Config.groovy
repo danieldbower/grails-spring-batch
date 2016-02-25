@@ -29,14 +29,10 @@ grails.mime.types = [ // the first one is the default format
     text:          'text/plain',
     hal:           ['application/hal+json','application/hal+xml'],
     xml:           ['text/xml', 'application/xml']
-                    ]
+]
 
 // URL Mapping Cache Max Size, defaults to 5000
 //grails.urlmapping.cache.maxsize = 1000
-
-// What URL patterns should be processed by the resources plugin
-grails.resources.adhoc.patterns = ['/images/*', '/css/*', '/js/*', '/plugins/*']
-grails.resources.adhoc.includes = ['/images/**', '/css/**', '/js/**', '/plugins/**']
 
 // Legacy setting for codec used to encode data with ${}
 grails.views.default.codec = "html"
@@ -111,24 +107,19 @@ log4j = {
            'org.codehaus.groovy.grails.web.pages',          // GSP
            'org.codehaus.groovy.grails.web.sitemesh',       // layouts
            'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-           'org.codehaus.groovy.grails.web.mapping', // URL mapping
-           'org.codehaus.groovy.grails.commons', // core / classloading
-           'org.codehaus.groovy.grails.plugins', // plugins
-           'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
+           'org.codehaus.groovy.grails.web.mapping',        // URL mapping
+           'org.codehaus.groovy.grails.commons',            // core / classloading
+           'org.codehaus.groovy.grails.plugins',            // plugins
+           'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
            'org.springframework',
            'org.hibernate',
            'net.sf.ehcache.hibernate'
 	info 'grails.app', 'scheduling', 'grails.plugins.springbatch'
 }
 
+
 plugin {
     springBatch {
-        jmx {
-            enable = true
-            remote {
-                enable = false
-            }
-        }
         loadTables = true
         database = "h2"
     }
@@ -142,3 +133,13 @@ environments {
         }
     }
 }
+
+//Ignore spring batch tables, which have no domain objects
+grails.plugin.databasemigration.ignoredObjects = ['BATCH_JOB_EXECUTION',
+	'BATCH_JOB_EXECUTION_CONTEXT','BATCH_JOB_EXECUTION_SEQ',
+	'BATCH_JOB_INSTANCE','BATCH_JOB_PARAMS','BATCH_JOB_SEQ',
+	'BATCH_STEP_EXECUTION', 'BATCH_STEP_EXECUTION_CONTEXT',
+	'BATCH_STEP_EXECUTION_SEQ',
+	'IDX_BATCH_JOB_INSTANCE_JOB_NAME_JOB_KEY','JOB_INST_UN',
+	'IDX_BATCH_STEP_EXECUTION_STEP_NAME_JOB_EXECUTION_ID',
+	'IDX_BATCH_STEP_EXECUTION_VERSION']

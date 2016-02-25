@@ -79,13 +79,6 @@ h1 {
 	margin: 0.8em 0 0.3em 0;
 }
 
-h2 {
-	color: #48802c;
-	font-weight: normal;
-	font-size: 1em;
-	margin: 0.8em 0 0.3em 0;
-}
-
 ul {
 	padding: 0;
 }
@@ -104,7 +97,7 @@ img {
 .content {
 }
 
-.content h1,h2 {
+.content h1 {
 	border-bottom: 1px solid #CCCCCC;
 	margin: 0.8em 1em 0.3em;
 	padding: 0 0.25em;
@@ -580,6 +573,11 @@ th:hover, tr:hover {
 	text-indent: 25px;
 }
 
+.ie6 .buttons input.delete, .ie6 .buttons input.edit, .ie6 .buttons input.save,
+.ie7 .buttons input.delete, .ie7 .buttons input.edit, .ie7 .buttons input.save {
+	padding-left: 36px;
+}
+
 .buttons .delete {
 	background-image: url(../images/skin/database_delete.png);
 }
@@ -595,4 +593,9 @@ th:hover, tr:hover {
 a.skip {
 	position: absolute;
 	left: -9999px;
+}
+
+a.skip:focus, a.skip:active {
+	position: relative;
+	left: 0px;
 }

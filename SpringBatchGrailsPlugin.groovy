@@ -4,6 +4,7 @@ import java.sql.Connection
 import java.sql.Statement
 
 import org.springframework.batch.core.configuration.support.MapJobRegistry
+import org.springframework.batch.core.configuration.support.JobRegistryBeanPostProcessor
 import org.springframework.batch.core.explore.support.JobExplorerFactoryBean
 import org.springframework.batch.core.launch.support.SimpleJobLauncher
 import org.springframework.batch.core.launch.support.SimpleJobOperator
@@ -77,7 +78,11 @@ class SpringBatchGrailsPlugin {
             tablePrefix = tablePrefixVal
         }
 
-        jobRegistry(MapJobRegistry) { }
+        jobRegistry(MapJobRegistry)
+
+        jobRegistryPostProcessor(JobRegistryBeanPostProcessor){
+            jobRegistry = ref("jobRegistry")
+        }
 
         jobOperator(SimpleJobOperator) {
             jobRepository = ref("jobRepository")

@@ -1,5 +1,3 @@
-import grails.plugins.springbatch.springbatchadmin.patch.PatchedSimpleJobServiceFactoryBean
-import grails.plugins.springbatch.ReloadableJobRegistryBeanPostProcessor
 import groovy.sql.Sql
 
 import java.sql.Connection
@@ -12,12 +10,13 @@ import org.springframework.batch.core.launch.support.SimpleJobOperator
 import org.springframework.batch.core.repository.support.JobRepositoryFactoryBean
 import org.springframework.core.task.SimpleAsyncTaskExecutor
 import org.springframework.core.task.SyncTaskExecutor
+import org.springframework.batch.admin.service.SimpleJobServiceFactoryBean
 
 import org.springframework.batch.core.repository.dao.AbstractJdbcBatchMetadataDao
 
 
 class SpringBatchGrailsPlugin {
-    def version = "2.5.0"
+    def version = "2.5.1"
     def groupId = 'org.grails.plugins'
     def grailsVersion = "2.5 > *"
     def title = "Grails Spring Batch Plugin"
@@ -33,17 +32,6 @@ class SpringBatchGrailsPlugin {
     def issueManagement = [ system: "JIRA", url: "https://github.com/johnrengelman/grails-spring-batch/issues" ]
     def scm = [ url: "https://github.com/johnrengelman/grails-spring-batch" ]
 
-    //From Platform Core
-    def doWithConfigOptions = {
-        //'dataSource'(type: String, defaultValue: "dataSource")
-        //'tablePrefix'(type: String, defaultValue: "BATCH")
-        //'maxVarCharLength'(type: Integer, defaultValue: AbstractJdbcBatchMetadataDao.DEFAULT_EXIT_MESSAGE_LENGTH)
-        //'loadTables'(type: Boolean, defaultValue: false)
-        'database'(type: String, defaultValue: 'h2', validator: { v ->
-            v ? null : 'batch.specify.database.type'
-        })
-    }
-
     def doWithSpring = {
         def conf = application.config.plugin.springBatch
 
@@ -53,13 +41,11 @@ class SpringBatchGrailsPlugin {
         conf.loadTables = conf.loadTables ?: false
         conf.database = conf.database ?: 'h2'
 
-        String tablePrefix = conf.tablePrefix ? (conf.tablePrefix + '_' ) : ''
         def dataSourceBean = conf.dataSource
-		def maxVarCharLength = conf.maxVarCharLength
 
-        String tablePrefixVal = tablePrefix
+        String tablePrefixVal = conf.tablePrefix ? (conf.tablePrefix + '_' ) : ''
         String dbType = conf.database
-        int maxVarCharLengthVal = maxVarCharLength
+        int maxVarCharLengthVal = conf.maxVarCharLength
 
 		jobRepository(JobRepositoryFactoryBean) {
             dataSource = ref(dataSourceBean)
@@ -90,14 +76,8 @@ class SpringBatchGrailsPlugin {
             dataSource = ref(dataSourceBean)
             tablePrefix = tablePrefixVal
         }
+
         jobRegistry(MapJobRegistry) { }
-        //Use a custom bean post processor that will unregister the job bean before trying to initializing it again
-        //This could cause some problems if you define a job more than once, you'll probably end up with 1 copy
-        //of the last definition processed instead of getting a DuplicateJobException
-        //Had to do this to get reloading to work
-        jobRegistryPostProcessor(ReloadableJobRegistryBeanPostProcessor) {
-            jobRegistry = ref("jobRegistry")
-        }
 
         jobOperator(SimpleJobOperator) {
             jobRepository = ref("jobRepository")
@@ -105,7 +85,8 @@ class SpringBatchGrailsPlugin {
             jobRegistry = ref("jobRegistry")
             jobExplorer = ref("jobExplorer")
         }
-        jobService(PatchedSimpleJobServiceFactoryBean) {
+
+        jobService(SimpleJobServiceFactoryBean) {
             jobRepository = ref("jobRepository")
             jobLauncher = ref("jobLauncher")
             jobLocator = ref("jobRegistry")

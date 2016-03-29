@@ -1,10 +1,14 @@
 package grails.plugins.springbatch.ui
 
+import groovy.util.logging.Log4j
+
+@Log4j
 class SpringBatchUiUtilities {
 
-    static long getDuration(Date start, Date end) {
+    static Long getDuration(Date start, Date end) {
         if(!start) {
-            throw new IllegalArgumentException("Must provide start")
+            log.error("Must provide start")
+            return null
         }
         return end?.time ? end.time - start.time : new Date().time - start.time
     }

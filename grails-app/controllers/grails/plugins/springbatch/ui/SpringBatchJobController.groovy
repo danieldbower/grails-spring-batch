@@ -8,6 +8,7 @@ class SpringBatchJobController {
 
     def springBatchUiService
     def springBatchService
+	def grailsApplication
 	
     static defaultAction = 'list'
 
@@ -35,6 +36,9 @@ class SpringBatchJobController {
 	}
 	
     def list() {
+		if(!params.max){
+			params.max = grailsApplication.config.plugin?.springBatch?.jobListSize ?: 10
+		}
         [modelInstances : springBatchUiService.getJobModels(params),
 			ready: springBatchService.ready]
     }

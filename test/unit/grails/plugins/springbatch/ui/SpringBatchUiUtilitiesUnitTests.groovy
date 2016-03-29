@@ -19,9 +19,9 @@ class SpringBatchUiUtilitiesUnitTests {
         assert 10 <= SpringBatchUiUtilities.getDuration(start, null)
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test
     void testGetDurationNullStart() {
-        SpringBatchUiUtilities.getDuration(null, null)
+        assert null == SpringBatchUiUtilities.getDuration(null, null)
     }
 
     @Test

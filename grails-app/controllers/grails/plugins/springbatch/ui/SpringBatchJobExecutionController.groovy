@@ -11,6 +11,10 @@ class SpringBatchJobExecutionController {
 	
 	def show(Long id) {
 		if(id) {
+			if(!params.max) {
+				params.max = grailsApplication.config.plugin?.springBatch?.stepListSize ?: 10
+			}
+
 			[jobExecution: springBatchUiService.jobExecutionModel(id),
 				modelInstances: springBatchUiService.getStepExecutionModels(id, params)]
 		} else {

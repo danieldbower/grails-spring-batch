@@ -280,6 +280,28 @@ where bji.job_name = ?
 	}
 
 	/**
+	 * For job x, tell me the start times and durations of the last y reports
+     */
+	Map jobDurationReport(String jobId, int quantity){
+		log.info("Duration report params: $jobId, $quantity")
+		try {
+			def result = batchSql.rows(
+"""select bje.start_time, (bje.end_time - bje.start_time) as "duration"
+from ${batchTablePrefix}job_execution bje
+  inner join ${batchTablePrefix}job_instance bji on bje.job_instance_id = bji.job_instance_id
+where bji.job_name = ?
+  and bje.exit_code='COMPLETED'
+  order by start_time desc
+  limit $quantity """.toString(), [jobId])
+			return [durations:result]
+
+		}catch(Exception nsje) {
+			log.info("Failed to generate job duration report for $jobId", nsje)
+			return [:]
+		}
+	}
+
+	/**
 	 * Spring event listener to detect when the app is ready for job launching
 	 */
 	@Override

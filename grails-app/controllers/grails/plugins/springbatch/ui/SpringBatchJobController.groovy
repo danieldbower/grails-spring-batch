@@ -45,8 +45,11 @@ class SpringBatchJobController {
 	
 	def show(String id) {
 		if(id) {
-			[job: springBatchUiService.jobModel(id),
-				jobModelInstances: springBatchUiService.getJobInstanceModels(id, params)]
+			int durationReportSize = params.int('durationReportSize')?:100
+			Map durationReport = springBatchService.jobDurationReport(id, durationReportSize)
+			[id:id, job: springBatchUiService.jobModel(id),
+				jobModelInstances: springBatchUiService.getJobInstanceModels(id, params),
+				durationReport: durationReport, durationReportSize:durationReportSize]
 		} else {
 			flash.error = "Please supply a job name"
             redirect(mapping:'batch', controller: "springBatchJob", action: "list")

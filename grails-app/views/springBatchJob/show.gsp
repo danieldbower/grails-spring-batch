@@ -3,6 +3,35 @@
 	<head>
 		<meta name="layout" content="main">
 		<title><g:message code="batch.job.show.label" args="[job.name]"/></title>
+
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+		<script type="text/javascript">
+			google.charts.load('current', {packages: ['corechart']});
+			google.charts.setOnLoadCallback(drawChart);
+
+			function drawChart() {
+				var data = google.visualization.arrayToDataTable([
+					[ {label: 'Time of Run', id: 'timeOfRun', type: 'string'},
+						{label: 'Duration', id: 'duration', type: 'number'} ],
+						<g:applyCodec encodeAs="none">
+						<%= durationReport.durations.collect{"['" + it.START_TIME + "',"+ it.duration + "]"}?.join(',') %>
+						</g:applyCodec>
+					]);
+
+				var options = {
+					title: 'Job Execution Duration over Time',
+					hAxis: {title: 'Time of Job Execution'},
+					vAxis: {title: 'Minutes'},
+					legend: 'none',
+					trendlines: {0: {}}    // Draw a trendline for data series 0.
+				};
+
+				var chart = new google.visualization.ScatterChart(document.getElementById('durationReportChart'));
+				chart.draw(data, options);
+			}
+
+		</script>
+
 	</head>
 	<body>
 		<div class="nav" role="navigation">
@@ -83,6 +112,13 @@
 				</g:each>
 				</tbody>
 			</table>
+
+			<div>
+				<div id="durationReportChart" style="width: 900px; height: 600px;"></div>
+				<p>Chart Size: <g:link action="show" params="[id:id, durationReportSize:(durationReportSize + 50)]">+50</g:link> /
+				<g:link action="show" params="[id:id, durationReportSize:(durationReportSize - 50)]">-50</g:link></p>
+			</div>
+
 			<div class="pagination">
 				<g:paginate total="${jobModelInstances.resultsTotalCount}" id="$job.name" />
 			</div>

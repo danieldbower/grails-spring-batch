@@ -14,7 +14,7 @@
 					[ {label: 'Time of Run', id: 'timeOfRun', type: 'string'},
 						{label: 'Duration', id: 'duration', type: 'number'} ],
 						<g:applyCodec encodeAs="none">
-						<%= durationReport.durations.collect{"['" + it.START_TIME + "',"+ it.duration + "]"}?.join(',') %>
+						<%= durationReport.durations.collect{"['" + it.startTime + "',"+ it.duration + "]"}?.join(',') %>
 						</g:applyCodec>
 					]);
 

@@ -42,10 +42,10 @@ class SpringBatchJobController {
         [modelInstances : springBatchUiService.getJobModels(params),
 			ready: springBatchService.ready]
     }
-	
+
 	def show(String id) {
 		if(id) {
-			int durationReportSize = params.int('durationReportSize')?:100
+			int durationReportSize = params.int('durationReportSize')?:defaultDurationReportSize()
 			Map durationReport = springBatchService.jobDurationReport(id, durationReportSize)
 			[id:id, job: springBatchUiService.jobModel(id),
 				jobModelInstances: springBatchUiService.getJobInstanceModels(id, params),
@@ -99,4 +99,9 @@ class SpringBatchJobController {
             redirect(mapping:'batch', action:"list")
 		}
 	}
+
+	private int defaultDurationReportSize(){
+		grailsApplication.config.plugin.springBatch.durationReportSize ?: 100
+	}
+
 }

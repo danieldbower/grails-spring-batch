@@ -283,17 +283,26 @@ where bji.job_name = ?
 	 * For job x, tell me the start times and durations of the last y reports
      */
 	Map jobDurationReport(String jobId, int quantity){
-		log.info("Duration report params: $jobId, $quantity")
+		log.debug("Duration report params: $jobId, $quantity")
 		try {
 			def result = batchSql.rows(
-"""select bje.start_time, (bje.end_time - bje.start_time) as "duration"
+"""select bje.start_time, bje.end_time
 from ${batchTablePrefix}job_execution bje
   inner join ${batchTablePrefix}job_instance bji on bje.job_instance_id = bji.job_instance_id
 where bji.job_name = ?
   and bje.exit_code='COMPLETED'
   order by start_time desc
   limit $quantity """.toString(), [jobId])
-			return [durations:result]
+			def calcDurations = result.collect{ row ->
+				Date startTime = row.START_TIME
+				Date endTime = row.END_TIME
+				BigDecimal durationInMins = 0L
+				if(startTime && endTime){
+					durationInMins = (endTime.time - startTime.time)/1000L/60L
+				}
+				[startTime:startTime, duration:(durationInMins)]
+			}
+			return [durations:calcDurations.reverse()]
 
 		}catch(Exception nsje) {
 			log.info("Failed to generate job duration report for $jobId", nsje)
